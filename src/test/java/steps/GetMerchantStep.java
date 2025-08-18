@@ -10,7 +10,8 @@ public class GetMerchantStep {
     private Response response;
     private String publicKey;
 
-    @Given("se desee consultar la información del cliente {string}")
+
+    @Given("se desee consultar la información del cliente con llave {string}")
     public void valid_key(String key){
         clientDataService = new ClientDataService( "https://api-sandbox.co.uat.wompi.dev/v1");
         publicKey = key;
@@ -23,12 +24,17 @@ public class GetMerchantStep {
     }
 
     @Then("deberá responder 200 y mostrarse la respuesta con la data del cliente")
-    public void verify_valid_response(){
+    public void verify_valid_key(){
         Assert.assertEquals(200, response.getStatusCode());
     }
 
     @Then("deberá indicar que no existe el cliente")
-    public void verify_invalid_response(){
+    public void verify_invalid_key(){
         Assert.assertEquals(404, response.getStatusCode());
+    }
+
+    @Then("deberá indicar que es requerida la llave")
+    public  void verify_no_key(){
+        Assert.assertEquals(401, response.getStatusCode());
     }
 }
