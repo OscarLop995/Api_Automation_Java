@@ -20,7 +20,7 @@ public class TransactionsService {
         int amount = 150000;
         String currency = "COP";
         String integritySecret = "stagtest_integrity_nAIBuqayW70XpUqJS4qf4STYiISd89Fp";
-        String signature = Signatures.generate_signature(reference, amount, currency, integritySecret);
+        String signature = Signatures.generateSignature(reference, amount, currency, integritySecret);
         String body = "{"
                 + "\"acceptance_token\":\"" + acceptanceToken + "\","
                 + "\"amount_in_cents\":" + amount + ","

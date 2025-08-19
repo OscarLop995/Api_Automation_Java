@@ -1,13 +1,13 @@
 package utils;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
-
-public class Signatures {
-    public static String generateSignature(String reference, int amount, String currency, String integritySecret) {
+public class EventSignatures {
+    public static String generateEventChecksum(String body, String eventSecret){
         try{
-            String concatenateData = reference +  amount + currency + integritySecret;
+            String data = body + eventSecret;
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(concatenateData.getBytes("UTF-8"));
+            byte[] hash = digest.digest(data.getBytes(StandardCharsets.UTF_8));
             StringBuilder sb = new StringBuilder();
             for (byte b : hash) {
                 String hex = Integer.toHexString(0xff & b);
@@ -18,7 +18,7 @@ public class Signatures {
             }
             return sb.toString();
         }catch (Exception e){
-            throw new RuntimeException("Error generando la firma", e);
+            throw new RuntimeException("Error generando checksum", e);
         }
     }
 }
