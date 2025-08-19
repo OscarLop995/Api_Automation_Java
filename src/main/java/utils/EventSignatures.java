@@ -3,9 +3,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 public class EventSignatures {
-    public static String generateEventChecksum(String body, String eventSecret){
+    public static String generateEventChecksum(String transactionId, String transactionStatus, int amountInCents, int timestamp, String eventSecret){
         try{
-            String data = body + eventSecret;
+            String data = transactionId + transactionStatus + amountInCents + timestamp + eventSecret;
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(data.getBytes(StandardCharsets.UTF_8));
             StringBuilder sb = new StringBuilder();

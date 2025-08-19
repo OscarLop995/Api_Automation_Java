@@ -8,7 +8,7 @@ import services.EventService;
 public class EventStep {
     private EventService eventService;
     private Response response;
-    private String eventBody;
+    private String body;
 
     @Given("que exista algún  evento configurado")
     public void eventValidation(){
@@ -16,12 +16,22 @@ public class EventStep {
     }
 
     @When("se envíe el evento")
-    public void sendEvent(String eventBody){
-        this.eventBody = eventBody;
-        response = eventService.sendEvent(eventBody);
+    public void sendEvent(){
+        response = eventService.sendEvent();
     }
 
-    @Then("el webhook deberá enviar una resuesta 200")
+    @When("se envíe el evento con firma válida")
+    public void sendValidSignature(){
+        response = eventService.sendEvent();
+    }
+
+    @When("se envíe el evento con firma inválida")
+    public void sendInvalidSignature(String body){
+        this.body = body;
+        response = eventService.sendEvent(body);
+    }
+
+    @Then("el webhook deberá enviar una respuesta {int}")
     public void verifyResponse(Integer expectedStatus){
         Assert.assertEquals(expectedStatus.intValue(), response.getStatusCode());
     }
